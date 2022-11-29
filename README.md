@@ -409,7 +409,7 @@ In the experimental part of Gradient Boosting Machines, we adjust the n_estimato
 This part will be examined in the analysis part.
 ___
 ## 5. eXtra Gradient Boost (XGBoost)
-![image](https://user-images.githubusercontent.com/115224653/204439840-dca6523b-0f40-4f21-85f2-7c96640d141d.png)
+![xgboost](https://www.researchgate.net/publication/345327934/figure/fig3/AS:1022810793209856@1620868504478/Flow-chart-of-XGBoost.png)
 
 Gradient Boost is a representative algorithm implemented using the Boosting technique.
 
@@ -514,6 +514,18 @@ First of all, the table below is a performance table of the decision tree withou
 
 |  F1-Score  | Dataset              |  Depth = 10 |   Depth = 20 |   Depth = 30 |  Depth = 40 |   Depth = 50 |
 |:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
+|          1 | Banking            |    **0.8602 (±0.003)** |        0.7814 (±0.003)|         0.7721 (±0.003)|        0.7729 (±0.003) |        0.7734 (±0.003)|
+|          2 | Breast                 |    0.9368 (±0.022)|        0.9403 (±0.065)|         **0.9456 (±0.065)**|        0.9403 (±0.065) |        0.9404 (±0.065)|
+|          3 | Diabetes                 |    **0.7001 (±0.026)**|        0.6820 (±0.043) |        0.6894 (±0.046) |        0.6864 (±0.039) |        0.6912 (±0.039) |
+|          4 | Glass                 |   0.6801 (±0.037) |        0.6723 (±0.027) |        0.6776 (±0.027) |        **0.7034 (±0.027)** |        0.6978 (±0.027) |
+|          5 | PersonalLoan                 |    0.9822 (±0.003)|        0.9814 (±0.003) |        0.9820 (±0.003) |        **0.9824 (±0.003)** |        0.9814 (±0.003) | 
+|          6 | Stellar                 |    **0.9677 (±0.002)** |        0.9613 (±0.002) |        0.9598 (±0.002) |        0.9608 (±0.002) |        0.9607 (±0.002) | 
+|          7 | WineQuality                 |    0.6127 (±0.026) |        0.6155 (±0.030) |        **0.6181 (±0.026)** |        0.6159 (±0.023) |        0.6147 (±0.022)  |
+
+The table below shows the performance table of the decision tree to which bagging is applied.
+
+|  Accuracy  | Dataset              |  Depth = 10 |   Depth = 20 |   Depth = 30 |  Depth = 40 |   Depth = 50 |
+|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
 |          1 | Banking            |    **0.8607 (±0.003)** |        0.8494 (±0.003)|         0.8476 (±0.003)|        0.8475 (±0.003) |        0.8475 (±0.003)|
 |          2 | Breast                 |    **0.9647 (±0.007)** |        0.9631 (±0.065)|         0.9632 (±0.065)|        0.9632 (±0.065) |        0.9632 (±0.065)|
 |          3 | Diabetes                 |    **0.7688 (±0.017)**|        0.7649 (±0.020) |        0.7649 (±0.020) |        0.7649 (±0.020) |        0.7649 (±0.020) |
@@ -521,6 +533,16 @@ First of all, the table below is a performance table of the decision tree withou
 |          5 | PersonalLoan                 |    **0.9884 (±0.003)**|        0.9880 (±0.003) |        0.9880 (±0.003) |        0.9880 (±0.003) |        0.9880 (±0.003) | 
 |          6 | Stellar                 |    0.9761 (±0.002) |        **0.9767 (±0.002)** |        0.9766 (±0.002) |        0.9766 (±0.002) |        0.9766 (±0.002) | 
 |          7 | WineQuality                 |    0.6725 (±0.021) |        0.6763 (±0.022) |        **0.6788 (±0.025)** |        0.6787 (±0.025) |        0.6787 (±0.025)  |
+
+|  F1-Score  | Dataset              |  Depth = 10 |   Depth = 20 |   Depth = 30 |  Depth = 40 |   Depth = 50 |
+|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
+|          1 | Banking            |    **0.9119 (±0.003)** |        0.8840 (±0.005)|         0.8801 (±0.005)|        0.8801 (±0.005) |        0.8801 (±0.005)|
+|          2 | Breast                 |    **0.9632 (±0.006)** |        0.9632 (±0.065)|         0.9632 (±0.065)|        0.9632 (±0.065) |        0.9632 (±0.065)|
+|          3 | Diabetes                 |    **0.7727 (±0.020)**|        0.7692 (±0.022) |        0.7692 (±0.022) |        0.7692 (±0.022) |        0.7692 (±0.022) |
+|          4 | Glass                 |   **0.7491 (±0.037)** |        0.7359 (±0.028) |        0.7359 (±0.028) |        0.7359 (±0.028) |        0.7359 (±0.028) |
+|          5 | PersonalLoan                 |    **0.9885 (±0.003)**|        0.9882 (±0.003) |        0.9882 (±0.003) |        0.9882 (±0.003) |        0.9882 (±0.003) | 
+|          6 | Stellar                 |    0.9763 (±0.002) |        **0.9768 (±0.002)** |        0.9767 (±0.001) |        0.9767 (±0.001) |        0.9767 (±0.001) | 
+|          7 | WineQuality                 |    0.6902 (±0.022) |        0.6939 (±0.020) |        **0.6969 (±0.023)** |        0.6969 (±0.023) |        0.6969 (±0.023)  |
 
 Analyzing the experimental results can be summarized as follows.
 
@@ -530,124 +552,169 @@ Analyzing the experimental results can be summarized as follows.
 #### 4. The deviation between repeated experiments was low.
 ___
 
-### [Experiment 2.] Comparison of k-NN anomaly detection performance by neighbors hyperparameter changes
-Like the Local Outlier Factor, the role of k-NN anonymous detection is also important for hyperparameter K. Experimentally check whether the role of K, which was insignificant in the Local Outlier Factor, is different in k-NN anonymous detection. The change pattern of K was configured in the same way as the Local Outlier Factor.
+## [Experiment 2.] Random Forest - Performance Comparison with Depth values
 
-|  Accuracy  | Dataset              |  K = 5 |   K = 10 |   K = 15 |   K = 20 |   K = 30 |   K = 50 |
-|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|:--------:|
-|          1 | Cardiotocogrpahy            |    0.9044 |        0.9049 |         0.9066|        0.9082 |        **0.9131**|        0.9121|
-|          2 | Glass                 |    **0.9533** |        0.9439|       0.9393 |        0.9392 |        0.9392|        0.9252|
-|          3 | Lympho                 |    0.9594 |        0.9594 |        0.9662 |        0.9662 |        0.9797 |        **0.9865** |
-|          4 | Seismic                 |    0.9342 |        0.9342 |       **0.9342** |        0.9299 |        0.9276 |        0.9249 |
-|          5 | Shuttle                 |    0.9284 |        0.9284 |        0.9284 |        0.9285 |        0.9285 |        0.9285 |
-|          6 | Annthyroid                 |    0.9258 |        0.9257 |        0.9256 |        0.9257 |        0.9254 |        **0.9259** |
-|          7 | Mammography                 |    0.9767 |        0.9767 |        0.9767 |        **0.9768** |        0.9766 |        0.9767 |
+Random forest uses bagging and random variable extraction techniques. 
 
-|  F1-Score  | Dataset              |  K = 5 |   K = 10 |   K = 15 |   K = 20 |   K = 30 |   K = 50 |
-|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|:--------:|
-|          1 | Cardiotocogrpahy            |    0.9498 |        0.9500 |         0.9508|        0.9517 |        **0.9541**|        0.9533|
-|          2 | Glass                 |    **0.9761** |        0.9712|        0.9687 |        0.9685 |        0.9685|        0.9610 |
-|          3 | Lympho                 |    0.9793 |        0.9793 |        0.9827 |        0.9827 |        0.9895 |        **0.9930** |
-|          4 | Seismic                 |    0.9659 |        0.9659 |        **0.9660** |        0.9637 |        0.9624 |        0.9609 |
-|          5 | Shuttle                 |    0.9629 |        0.9629 |        0.9629 |        0.9629 |        0.9629 |        0.9629 |
-|          6 | Annthyroid                 |    0.9614 |        0.9614 |        0.9614 |        0.9614 |        0.9612 |        **0.9615** |
-|          7 | Mammography                 |    0.9882 |        0.9882 |        0.9882 |        0.9882 |        0.9881 |       **0.9882** |
+And there is a difference in performance depending on the model complexity, and we observe the performance comparison by changing the depth value associated with the model complexity.
+
+|  Accuracy  | Dataset              |  Depth = 10 |   Depth = 20 |   Depth = 30 |  Depth = 40 |   Depth = 50 |
+|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
+|          1 | Banking            |    **0.8671 (±0.003)** |        0.8608 (±0.003)|         0.8603 (±0.003)|        0.8601 (±0.003) |        0.8601 (±0.003)|
+|          2 | Breast                 |    **0.9614 (±0.007)** |        0.9614 (±0.007)|         0.9614 (±0.007)|        0.9614 (±0.007) |        0.9614 (±0.007)|
+|          3 | Diabetes                 |    **0.7584 (±0.011)**|        0.7571 (±0.014) |        0.7545 (±0.016) |        0.7545 (±0.016) |        0.7545 (±0.016) |
+|          4 | Glass                 |   0.7628 (±0.023) |        **0.7674** (±0.042) |        0.7674 (±0.042) |        0.7674 (±0.042) |        0.7674 (±0.042) |
+|          5 | PersonalLoan                 |   0.9886 (±0.003)|        0.9886 (±0.003) |        **0.9888 (±0.003)** |        0.9888 (±0.003) |        0.9888 (±0.003) | 
+|          6 | Stellar                 |    0.9750 (±0.002) |        0.9752 (±0.001) |        **0.9756 (±0.001)** |        0.9756 (±0.001) |        0.9756 (±0.001) | 
+|          7 | WineQuality                 |    0.6788 (±0.019) |        0.6913 (±0.025) |        **0.6900 (±0.025)** |        0.6900 (±0.025) |        0.6900 (±0.025)  |
+
+|  F1-Score  | Dataset              |  Depth = 10 |   Depth = 20 |   Depth = 30 |  Depth = 40 |   Depth = 50 |
+|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
+|          1 | Banking            |    **0.9272 (±0.002)** |        0.9100 (±0.003)|         0.9086 (±0.004)|        0.9086 (±0.004) |        0.9086 (±0.004)|
+|          2 | Breast                 |    **0.9615 (±0.007)** |        0.9615 (±0.008)|         0.9615 (±0.008)|        0.9615 (±0.008) |        0.9615 (±0.008)|
+|          3 | Diabetes                 |    **0.7645 (±0.015)**|        0.7640 (±0.017) |        0.7614 (±0.019) |        0.7614 (±0.019) |        0.7614 (±0.019) |
+|          4 | Glass                 |   **0.7763 (±0.018)** |        0.7812 (±0.040) |        0.7812 (±0.040) |        0.7812 (±0.040) |        0.7812 (±0.040) |
+|          5 | PersonalLoan                 |    **0.9889 (±0.003)**|        0.9888 (±0.002) |        0.9890 (±0.002) |        0.9890 (±0.002) |        0.9890 (±0.002) | 
+|          6 | Stellar                 |    0.9751 (±0.002) |        **0.9753 (±0.001)** |        0.9757 (±0.001) |        0.9757 (±0.001) |        0.9757 (±0.001) | 
+|          7 | WineQuality                 |    0.7011 (±0.017) |        0.7101 (±0.024) |        **0.7089 (±0.022)** |        0.7089 (±0.022) |        0.7089 (±0.022)  |
 
 Analyzing the experimental results can be summarized as follows.
 
-#### 1. It seems that the effect is weaker in k-NN than the weak effect of K in the Local Outlier Factor.
-#### 2. Cardiotography datasets have lower performance than other datasets. This seems to be a characteristic of a dataset that should not be approached based on distance (K).
-#### 3. K's role seems to be meaningful only when the threshold for determining the outsider is clearly established.
+#### 1. Random Forest did not always perform better than the Decision Tree with Bagging.
+#### 2. As in Decision Tree, an increase in max_depth associated with model complexity did not improve performance.
+#### 3. Similarly, it was observed that setting the max_depth hyperparameter value suitable for the dataset is important.
 
 ___
-### [Experiment 3.] Effects of Masking on Auto-encoder
-In Auto-encoder, the MAD_Score described above is set to threshold. In this experiment, the performance when masking is applied and when not applied is compared. If masking is applied, the ratio of masking, args.Compare the masking_ratio in 0.1, 0.2, 0.3, and 0.4 cases. Epoch is 300, batch size is 128.
+## [Experiment 3.] AdaBoost - DT Performance Comparison by Adaptive Boosting Application
 
-#### 1) No Masking Case
-|  Accuracy  | Dataset              |  Base |
-|:----------:|:--------------------:|:------:|
-|          1 | Cardiotocogrpahy            |    0.7554 |
-|          2 | Glass                 |    0.7600 |
-|          3 | Lympho                 |    0.9429 |
-|          4 | Seismic                 |    0.7320 |
-|          5 | Shuttle                 |    0.9865 |
-|          6 | Annthyroid                 |    0.7479 |
-|          7 | Mammography                 |    0.9100 |
 
-|  F1-Score  | Dataset              |  Base |
-|:----------:|:--------------------:|:------:|
-|          1 | Cardiotocogrpahy            |    0.8211 |
-|          2 | Glass                 |    0.8500 |
-|          3 | Lympho                 |    0.9666 |
-|          4 | Seismic                 |    0.8262 |
-|          5 | Shuttle                 |    0.9907 |
-|          6 | Annthyroid                 |    0.8448 |
-|          7 | Mammography                 |    0.9519 |
+As confirmed in the python code part, AdaBoost also utilized the decision tree as the base learner and the case where Adaptive Boosting is applied and not.
 
-And the following is the result table of applying masking.
+Like experiment 1, this time, we would like to compare performance changes depending on the application of Boosting (AdaBoost).
 
-|  Accuracy  | Dataset              |  Base |   Masking ratio = 0.1 |   Masking ratio = 0.2 |   Masking ratio = 0.3 |   Masking ratio = 0.4 |
+The table below to which Adaptive Boosting is not applied is the same as the table of results when Bagging is not applied in experiment 1.
+
+|  Accuracy  | Dataset              |  Depth = 10 |   Depth = 20 |   Depth = 30 |  Depth = 40 |   Depth = 50 |
 |:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
-|          1 | Cardiotocogrpahy            |    0.7554 |        0.7377 |         **0.8560**|        0.7949 |        0.7929|
-|          2 | Glass                 |    0.7600 |        0.8000|       0.7600 |        **0.8600** |        0.7400|
-|          3 | Lympho                 |    **0.9429** |        0.8857 |        0.8000 |        0.8857 |        0.9143 |
-|          4 | Seismic                 |    0.7320 |       **0.7810**|       0.6554|        0.7795|        0.7688|
-|          5 | Shuttle                 |    0.9865|        0.9854|        0.9842|        0.8383|        **0.9868**|
-|          6 | Annthyroid                 |    0.7479 |        **0.7602**|        0.7190|        0.7126|        0.7093|
-|          7 | Mammography                 |    0.9100 |        **0.9104**|        0.8990|        0.8810|        0.8936|
+|          1 | Banking            |    **0.8345 (±0.008)** |        0.7881 (±0.005)|         0.7820 (±0.003)|        0.7824 (±0.004) |        0.7830 (±0.008)|
+|          2 | Breast                 |    0.9368 (±0.022) |        0.9404 (±0.010)|         **0.9456 (±0.012)**|        0.9404 (±0.019) |        0.9404 (±0.030)|
+|          3 | Diabetes                 |    **0.7013 (±0.025)**|        0.6857 (±0.040) |        0.6922 (±0.044) |        0.6896 (±0.036) |        0.6935 (±0.037) |
+|          4 | Glass                 |   **0.6837 (±0.066)** |        0.6698 (±0.045) |        0.6744 (±0.033) |        0.6514 (±0.057) |        0.6514 (±0.004) |
+|          5 | PersonalLoan                 |    0.9822 (±0.002)|        0.9814 (±0.001) |        0.9820 (±0.002) |        **0.9824 (±0.003)** |        0.9814 (±0.002) | 
+|          6 | Stellar                 |    **0.9676 (±0.002)** |        0.9614 (±0.002) |        0.9599 (±0.002) |        0.9609 (±0.002) |        0.9608 (±0.002) | 
+|          7 | WineQuality                 |    0.6069 (±0.027) |        0.6150 (±0.032) |        **0.6175 (±0.026)** |        0.6138 (±0.026) |        0.6125 (±0.025)  |
 
-|  F1-Score  | Dataset              |  Base |   Masking ratio = 0.1 |   Masking ratio = 0.2 |   Masking ratio = 0.3 |   Masking ratio = 0.4 |
+|  F1-Score  | Dataset              |  Depth = 10 |   Depth = 20 |   Depth = 30 |  Depth = 40 |   Depth = 50 |
 |:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
-|          1 | Cardiotocogrpahy            |    0.8211 |        0.8261 |         **0.9004**|        0.8628 |        0.8575|
-|          2 | Glass                 |    0.8500 |        0.8863|       0.8537 |        **0.9195**|        0.8395|
-|          3 | Lympho                 |    **0.9666** |        0.9333 |        0.8814 |        0.9333 |        0.9474 |
-|          4 | Seismic                 |    0.8262 |        **0.8563**|       0.7508|        0.8569|        0.8527|
-|          5 | Shuttle                 |    0.9907|        0.9900|        0.9891|        0.8993|        **0.9916**|
-|          6 | Annthyroid                 |    0.8448 |        **0.8497**|        0.8289|        0.8275|        0.8283|
-|          7 | Mammography                 |    **0.9519** |        0.9497|        0.9428|        0.9318|        0.9438|
+|          1 | Banking            |    **0.8602 (±0.003)** |        0.7814 (±0.003)|         0.7721 (±0.003)|        0.7729 (±0.003) |        0.7734 (±0.003)|
+|          2 | Breast                 |    0.9368 (±0.022)|        0.9403 (±0.065)|         **0.9456 (±0.065)**|        0.9403 (±0.065) |        0.9404 (±0.065)|
+|          3 | Diabetes                 |    **0.7001 (±0.026)**|        0.6820 (±0.043) |        0.6894 (±0.046) |        0.6864 (±0.039) |        0.6912 (±0.039) |
+|          4 | Glass                 |   0.6801 (±0.037) |        0.6723 (±0.027) |        0.6776 (±0.027) |        **0.7034 (±0.027)** |        0.6978 (±0.027) |
+|          5 | PersonalLoan                 |    0.9822 (±0.003)|        0.9814 (±0.003) |        0.9820 (±0.003) |        **0.9824 (±0.003)** |        0.9814 (±0.003) | 
+|          6 | Stellar                 |    **0.9677 (±0.002)** |        0.9613 (±0.002) |        0.9598 (±0.002) |        0.9608 (±0.002) |        0.9607 (±0.002) | 
+|          7 | WineQuality                 |    0.6127 (±0.026) |        0.6155 (±0.030) |        **0.6181 (±0.026)** |        0.6159 (±0.023) |        0.6147 (±0.022)  |
+
+And the table below is a table of performance results when Adaptive Boosting is applied.
+
+|  Accuracy  | Dataset              |  Depth = 10 |   Depth = 20 |   Depth = 30 |  Depth = 40 |   Depth = 50 |
+|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
+|          1 | Banking            |    **0.8524 (±0.003)** |        0.8248 (±0.028)|         0.8087 (±0.033)|        0.8087 (±0.033) |        0.8087 (±0.033)|
+|          2 | Breast                 |    **0.9439 (±0.022)** |        0.9439 (±0.022)|         0.9439 (±0.022)|        0.9439 (±0.022) |        0.9439 (±0.022)|
+|          3 | Diabetes                 |    **0.7638 (±0.011)**|        0.6858 (±0.039) |        0.6858 (±0.039) |        0.6858 (±0.039) |        0.6858 (±0.039) |
+|          4 | Glass                 |   0.6686 (±0.027) |        0.6768 (±0.061) |        0.6768 (±0.061) |        0.6768 (±0.061) |        **0.6768 (±0.061)** |
+|          5 | PersonalLoan                 |    **0.9882 (±0.002)**|        0.9828 (±0.001) |        0.9828 (±0.001) |        0.9828 (±0.001) |        0.9828 (±0.001) | 
+|          6 | Stellar                 |    **0.9745 (±0.002)** |        0.9681 (±0.006) |        0.9606 (±0.002) |        0.9606 (±0.002) |        0.9606 (±0.002) | 
+|          7 | WineQuality                 |    **0.6738 (±0.028)** |        0.5975 (±0.017) |        0.6075 (±0.020) |        0.6075 (±0.020) |        0.6075 (±0.020)  |
+
+|  F1-Score  | Dataset              |  Depth = 10 |   Depth = 20 |   Depth = 30 |  Depth = 40 |   Depth = 50 |
+|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
+|          1 | Banking            |    **0.8943 (±0.004)** |        0.8453 (±0.050)|         0.8194 (±0.061)|        0.8185 (±0.059) |        0.8181 (±0.059)|
+|          2 | Breast                 |    **0.9437 (±0.022)**|        0.9437 (±0.022)|         0.9437 (±0.022)|        0.9437 (±0.022) |        0.9437 (±0.022)|
+|          3 | Diabetes                 |    **0.7638 (±0.011)**|        0.6858 (±0.039) |        0.6858 (±0.039) |        0.6858 (±0.039) |        0.6858 (±0.039) |
+|          4 | Glass                 |   0.6686 (±0.027) |        **0.6768 (±0.061)** |        0.6768 (±0.061) |        0.6768 (±0.061) |        0.6768 (±0.061) |
+|          5 | PersonalLoan                 |    **0.9885 (±0.002)**|        0.9828 (±0.001) |        0.9828 (±0.001) |        0.9828 (±0.001) |        0.9828 (±0.001) | 
+|          6 | Stellar                 |    **0.9747 (±0.002)** |        0.9682 (±0.006) |        0.9605 (±0.002) |        0.9605 (±0.002) |        0.9605 (±0.002) | 
+|          7 | WineQuality                 |    **0.6920 (±0.029)** |        0.5974 (±0.017) |        0.6087 (±0.018)|        0.6087 (±0.018) |        0.6087 (±0.018)  |
 
 Analyzing the experimental results can be summarized as follows.
 
-#### 1. In the dataset (Cardio, Glass), where the accuracy was relatively low, the masking effect appeared quite a bit.
-#### 2. The effect was insignificant on the highly accurate datasets (Shuttle, Lympho, and Mammography).
-#### 3. It was judged that it was worth trying masking on a dataset where the threshold was not accurately built.
+#### 1. Compared to when Adaptive Boosting was not applied, performance was improved when Adaptive Boosting was applied.
+#### 2. The Boosting family is effective when the model complexity is low, and unlike the results of Bagging's experiments, Adaptive Boosting performed best when the depth=10 has the relatively lowest model complexity.
+#### 3. Glass dataset did not show the effect of boosting.
 ___
-### [Experiment 4.] Comparison of Isolation Forest anomaly detection performance by n_esitimators hyperparameter changes
-The most important hyperparameter in the code of the Isolation Forest methodology is n_estimators, which represent the number of trees. In the case of max_sample hyperparameter, it can be set to 'auto', so it is utilized. The experimental table below shows the results according to the change in the number of n_estimators.
+## [Experiment 4.] Gradient Boosting Machine (GBM) - Performance comparison based on changes in n_estimators values
 
-|  Accuracy  | Dataset              |  n_estimators = 10 |   n_estimators = 50 |   n_estimators = 100 |   n_estimators = 200 |   n_estimators = 400 |
-|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
-|          1 | Cardiotocogrpahy            |    0.9093|        0.9132|         **0.9143**|        0.9143|        0.9143|
-|          2 | Glass                 |    0.9532|        **0.9533**|       0.9533|        0.9533|        0.9533|
-|          3 | Lympho                 |    0.9730|        **0.9730**|        0.9730|        0.9730|        0.9730|
-|          4 | Seismic                 |    0.9257|       **0.9280**|       0.9280|        0.9280|        0.9280|
-|          5 | Shuttle                 |    0.9382|        **0.9384**|        0.9384|        **0.9419**|        0.9419|
-|          6 | Annthyroid                 |    0.9328|        0.9283|        **0.9286**|        0.9283|        0.9283|
-|          7 | Mammography                 |    0.9747 |        **0.9784**|        0.9757|        0.9747|        0.9751|
+GBM is also a type of Boosting and is effective for algorithms with low model complexity. 
 
-|  F1-Score  | Dataset              |  n_estimators = 10 |   n_estimators = 50 |   n_estimators = 100 |   n_estimators = 200 |   n_estimators = 400 |
+One of GBM's arguments, n_estimators, is a hyperparameter that determines how many times boosting is applied. 
+
+Personally, I think the model complexity will be high when n_estimators are high, so I observe how the performance changes while changing the n_estimators value.
+
+Since the default value of the n_estimators hyperparameter is 100, we will increase it from 100.
+
+|  Accuracy  | Dataset              |  n_estimators = 100 |   n_estimators = 200 |   n_estimators = 300 |  n_estimators = 400 |   n_estimators = 500 |
 |:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
-|          1 | Cardiotocogrpahy            |    0.9521|        0.9541|         **0.9547**|        0.9547|        0.9547|
-|          2 | Glass                 |    **0.9760**|        0.9760|       0.9760|        0.9760|        0.9760|
-|          3 | Lympho                 |    **0.9861**|        0.9861|        0.9861|        0.9861|        0.9861|
-|          4 | Seismic                 |    0.9614|       0.9626|       0.9626|        **0.9280**|        0.9626|
-|          5 | Shuttle                 |    0.9678|        0.9679|        0.9679|        **0.9688**|        0.9688|
-|          6 | Annthyroid                 |    **0.9649**|        0.9626|        0.9627|        0.9626|        0.9626|
-|          7 | Mammography                 |    0.9871 |        **0.9890**|        0.9876|        0.9871|        0.9874|
+|          1 | Banking            |    **0.8647 (±0.004)** |        0.8586 (±0.006)|         0.8549 (±0.006)|        0.8509 (±0.006) |        0.8471 (±0.006)|
+|          2 | Breast                 |    0.9649 (±0.011) |        **0.9667 (±0.013)**|         0.9667 (±0.013)|        0.9649 (±0.015) |        0.9649 (±0.015)|
+|          3 | Diabetes                 |    **0.7506 (±0.011)**|        0.7312 (±0.013) |        0.7364 (±0.013) |        0.7364 (±0.018) |        0.7286 (±0.023) |
+|          4 | Glass                 |   0.7535 (±0.048) |        **0.7628 (±0.040)** |        0.7628 (±0.045) |        0.7628 (±0.040) |        0.7628 (±0.040) |
+|          5 | PersonalLoan                 |    0.9886 (±0.003)|        0.9890 (±0.002) |        **0.9898 (±0.002)** |        0.9890 (±0.002) |        0.9888 (±0.002) | 
+|          6 | Stellar                 |    0.9743 (±0.002)|        0.9751 (±0.001) |        0.9757 (±0.001) |        0.9759 (±0.001) |        **0.9762 (±0.001)** | 
+|          7 | WineQuality                 |    0.6550 (±0.022) |        0.6700 (±0.013) |        **0.6763 (±0.011)** |        0.6750 (±0.009) |        0.6731 (±0.016)  |
+
+|  F1-Score  | Dataset              |  n_estimators = 100 |   n_estimators = 200 |   n_estimators = 300 |  n_estimators = 400 |   n_estimators = 500 |
+|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
+|          1 | Banking            |    **0.9199 (±0.005)** |        0.9080 (±0.005)|         0.8990 (±0.005)|        0.8909 (±0.006) |        0.8835 (±0.006)|
+|          2 | Breast                 |    0.9649 (±0.011) |        **0.9668 (±0.013)**|         0.9667 (±0.013)|        0.9651 (±0.015) |        0.9651 (±0.015)|
+|          3 | Diabetes                 |    **0.7566 (±0.013)**|        0.7375 (±0.014) |        0.7419 (±0.016) |        0.7415 (±0.021) |        0.7335 (±0.024) |
+|          4 | Glass                 |   0.7611 (±0.038) |        **0.7738 (±0.036)** |        0.7727 (±0.041) |        0.7719 (±0.035) |        0.7719 (±0.035) |
+|          5 | PersonalLoan                 |    0.9887 (±0.003)|        0.9891 (±0.002) |        **0.9899 (±0.002)** |        0.9891 (±0.002) |        0.9889 (±0.002) | 
+|          6 | Stellar                 |    0.9745 (±0.002)|        0.9752 (±0.001) |        0.9759 (±0.001) |        0.9760 (±0.001) |        **0.9763 (±0.001)** | 
+|          7 | WineQuality                 |    0.6685 (±0.022) |        0.6826 (±0.028) |        **0.6893 (±0.016)** |        0.6877 (±0.015) |        0.6860 (±0.017)  |
 
 Analyzing the experimental results can be summarized as follows.
 
-#### 1. If the number of samples in the dataset(Glass, Lympho) is small, it is useless to increase n_estimators.
-#### 2. In the case of Shuttle dataset with the largest number of samples, there was a change in performance until the n_estimators reached 200.
-#### 3. Even if the number of samples was enough, increasing n_estimators did not mean improving performance(Annthyroid, Mammography).
+#### 1. The n_estimators value showed the highest performance near 300. That is, it is insignificant whether n_estimators directly affect the model complexity.
+#### 2. Certain datasets showed better performance than in the case of Adaptive Boosting.
+
+___
+## [Experiment 5.] XGBoost - Comparison performance with GridSearch
+
+In the case of XGBoost, there are three hyperparameters: n_estimator, learning_rate, and max_depth. 
+
+Therefore, in this experiment, various hyperparameter combinations are formed and the best combination is found through gridsearch. 
+
+And in the next experimental part, based on all experimental results to date, we summarize the algorithms with the best performance for each dataset.
+
+| Index | Dataset      | n_estimators | learning_rate | max_depth | Accuracy |
+|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
+| 1     | Banking      | 200          | 0.01          | 4         | 0.8668   |
+| 2     | Breast       | 200          | 0.05          | 4         | 0.9670   |
+| 3     | Diabetes     | 300          | 0.01          | 4         | 0.7557   |
+| 4     | Glass        | 100          | 0.05          | 4         | 0.7366   |
+| 5     | PersonalLoan | 100          | 0.1           | 4         | 0.9858   |
+| 6     | Stellar      | 500          | 0.1           | 6         | 0.9776   |
+| 7     | WineQuality  | 100          | 0.2           | 10        | 0.6599   |
+
+## [Experiment 5-1.] Best Algorithm for each Dataset (Accuracy)
+
+| Index | Dataset      | Algorithm         | n_estimators  | learning_rate | max_depth   | Accuracy |
+|:-------:|:--------------:|:-------------------:|:---------------:|:---------------:|:-------------:|:----------:|
+| 1     | Banking      | Random Forest     | 100 (default) | X             | 10          | 0.8671   |
+| 2     | Breast       | XGBoost           | 200           | 0.05          | 4           | 0.9670   |
+| 3     | Diabetes     | Bagging(DT)       | 100 (default) | X             | 10          | 0.7688   |
+| 4     | Glass        | Random Forest     | 100 (default) | X             | 20          | 0.7674   |
+| 5     | PersonalLoan | Gradient Boosting | 300           | 0.1 (default) | 3 (default) | 0.9898   |
+| 6     | Stellar      | XGBoost           | 500           | 0.1           | 6           | 0.9776   |
+| 7     | WineQuality  | Random Forest     | 100 (default) | X             | 30          | 0.6900   |
 
 ___
 ## Conclusion
 
-#### 1) For anomaly detection, it is very important to determine the threshold that determines whether it is an outlier.
-#### 2) In the case of Isolation Forest, the percentage of the outlier is received as an argument and the threshold is determined by itself. 
-#### 3) The IF's overall performance was good. However, in some cases, the Auto-encoder, which arbitrarily set the threshold value, showed better performance than Isolation Forest.
-#### 4) I think that research on thresholds suitable for datasets and methodologies used is an essential field.
+### 1) Appropriate hyperparameter changes were needed to indicate changes in model performance according to model complexity.
+### 2) Random Forest, famous for its good performance, performed best on three of the seven datasets.
+### 3) The Boosting family showed high performance when the model complexity was low, but the Bagging family did not prove high performance when the model complexity was high.
+### 4) Just as the best algorithms are different for each dataset, I felt that it was worth using various algorithms when used in practice.
 ___
 
 ### Reference
@@ -655,19 +722,8 @@ ___
 - Business Analytics, Korea university (IME-654) https://www.youtube.com/watch?v=vlkbVgdPXc4&t=1588s
 - https://www.simplilearn.com/tutorials/machine-learning-tutorial/bagging-in-machine-learning
 - https://regenerativetoday.com/simple-explanation-on-how-decision-tree-algorithm-makes-decisions/The-anomaly-detection-and-the-classification-learning-schemas_fig1_282309055
-- 
-- 
-- 
-- 
-- 
+- https://www.researchgate.net/publication/345327934/figure/fig3/AS:1022810793209856@1620868504478
+- https://www.akira.ai/hubfs/Imported_Blog_Media/
+- https://cdn-images-1.medium.com
+- https://i0.wp.com/thaddeus-segura.com/
 
-
-|  Accuracy  | Dataset              |  K = 5 |   K = 10 |   K = 15 |   K = 20 |   K = 30 |   K = 50 |
-|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|:--------:|
-|          1 | Banking            |    0. |        0. |         0.|        0.8990 |        0.|        0.|
-|          2 | Breast                 |    0. |        0.|        0. |        0. |        0.|        0. |
-|          3 | Diabetes                 |    0. |        0. |        0. |        0. |        0. |        0. |
-|          4 | Glass                 |    0. |        0. |        0. |        0. |        0. |        0. |
-|          5 | PersonalLoan                 |    0. |        0. |        0. |        0. |        0. |        0. |
-|          6 | Stellar                 |    0. |        0. |        0. |        0. |        0. |        0. |
-|          7 | WineQuality                 |    0. |        0. |        0. |        0. |        0. |        0. |
