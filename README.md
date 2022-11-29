@@ -409,7 +409,7 @@ In the experimental part of Gradient Boosting Machines, we adjust the n_estimato
 This part will be examined in the analysis part.
 ___
 ## 5. eXtra Gradient Boost (XGBoost)
-![xgboost](https://www.researchgate.net/publication/345327934/figure/fig3/AS:1022810793209856@1620868504478/Flow-chart-of-XGBoost.png)
+![image](https://user-images.githubusercontent.com/115224653/204450586-d5c53de5-4b3a-4fe7-adeb-ebd63e0c1b43.png)
 
 Gradient Boost is a representative algorithm implemented using the Boosting technique.
 
