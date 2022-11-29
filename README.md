@@ -17,37 +17,44 @@ ___
 ## 0. Overview of Ensemble
 ![image](https://user-images.githubusercontent.com/115224653/204128272-c65bf7d7-a25e-491b-a06a-cfde1837ac0f.png)
 ### - What is "Ensemble?"
-Ensemble is a French word for unity and harmony. It is mainly used in music to mean concerto on various instruments. A large number of small instrumental sounds are harmonized to create a more magnificent and beautiful sound. Of course, you shouldn't, but one tiny mistake can be buried in another sound.    
-Ensemble in machine learning is similar. Several weak learners gather to form a stronger strong learner through voting. Since there are many models, even if the prediction is misaligned in one model, it is somewhat corrected. That is, a more generalized model is completed.   
+Ensemble is a French word for unity and harmony. It is mainly used in music to mean concerto on various instruments. 
+
+A large number of small instrumental sounds are harmonized to create a more magnificent and beautiful sound. 
+
+Of course, you shouldn't, but one tiny mistake can be buried in another sound.    
+
+Ensemble in machine learning is similar. Several weak learners gather to form a stronger strong learner through voting. 
+
+Since there are many models, even if the prediction is misaligned in one model, it is somewhat corrected. That is, a more generalized model is completed.   
+
 The two goals of the ensemble are as follows.
 
-### - What is 'Goal of Ensemble?'
-#### 1. How do we ensure diversity?
-#### 2. How do you combine different results from different models?
-
+### 1. How do we ensure diversity?
+### 2. How do you combine different results from different models?
+___
 ## Dataset
 
-We use 7 unbalanced datasets for Anomaly Detection (Cardiotocogrpahy, Glass, Lympho, Seismic, Shuttle, Annthyroid, Mammography)   
+We use 7 datasets for Classification (Banking, Breast, Diabetes, Glass, PersonalLoan, Stellar, Winequality)   
 
-Cardiotocogrpahy dataset : <https://archive.ics.uci.edu/ml/datasets/cardiotocography>     
-Glass dataset : <http://odds.cs.stonybrook.edu/glass-data/>   
-Lympho dataset : <https://archive.ics.uci.edu/ml/datasets/Lymphography>   
-Seismic datset : <http://odds.cs.stonybrook.edu/seismic-dataset/>      
-Shuttle dataset : <http://odds.cs.stonybrook.edu/shuttle-dataset/>   
-Annthyroid dataset : <http://odds.cs.stonybrook.edu/annthyroid-dataset/>   
-Mammography dataset : <http://odds.cs.stonybrook.edu/mammography-dataset/>   
+Banking dataset : <https://www.kaggle.com/datasets/rashmiranu/banking-dataset-classification>     
+Breast dataset : <https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data>   
+Diabetes dataset : <https://www.kaggle.com/datasets/mathchi/diabetes-data-set>   
+Glass datset : <https://www.kaggle.com/datasets/uciml/glass>      
+PersonalLoan dataset : <https://www.kaggle.com/datasets/teertha/personal-loan-modeling>   
+Steallr dataset : <https://www.kaggle.com/datasets/fedesoriano/stellar-classification-dataset-sdss17>   
+WineQuality dataset : <https://archive.ics.uci.edu/ml/datasets/wine+quality>   
 
 In all methods, data is used in the following form.
 ``` C
 import argparse
 
 def Parser1():
-    parser = argparse.ArgumentParser(description='3_Anomaly Detection')
+    parser = argparse.ArgumentParser(description='4_Ensemble')
 
     # data type
     parser.add_argument('--data-path', type=str, default='./data/')
-    parser.add_argument('--data-type', type=str, default='Cardiotocogrpahy.csv',
-                        choices = ['Cardiotocogrpahy.csv', 'Glass.csv', 'Lympho.csv', 'Seismic.csv', 'Shuttle.csv', 'Annthyroid.csv', 'Mammography.csv'])            
+    parser.add_argument('--data-type', type=str, default='Banking.csv',
+                        choices = ['Banking.csv', 'Breast.csv', 'Diabetes.csv', 'Glass.csv', 'PersonalLoan.csv', 'Steallr.csv', 'WineQuality.csv'])            
                         
 data = pd.read_csv(args.data_path + args.data_type)
 
@@ -56,366 +63,471 @@ y_data = data.iloc[:, -1]
 ```
 ___
 
-## Density-based Anomaly Detection
+# Bagging
 
-### 1. Local Outlier Factor (LOF)
+## What is "Bagging"?   
+   
 
-<p align="center"><img src="https://user-images.githubusercontent.com/115224653/201899094-fd568fa0-1f49-44b0-b249-d4597427620f.png" width="600" height="300"></p> 
+![Bagging](https://www.simplilearn.com/ice9/free_resources_article_thumb/Bagging.PNG)
 
-Local Outlier Factor is an Anomaly Detection method that considers the relative density of data around an instance. There are two key elements of LOF, 1. k-distance and 2. reachability distance.
+Bagging is one of the enamble methods that increases the performance of the model.  
 
-![image](https://user-images.githubusercontent.com/115224653/201900052-296dbd21-1c64-4044-b44f-3e8abd597ae2.png)
+If you look at the above picture, you can see that the same data with the same color is duplicated in bootstrap.   
 
-#### 1. K-distance
-The K-distance has the largest distance value among the distances from the K instances arbitrarily determined around the corresponding instance. $N_k(p)$ means a set of all instances that are closer than k-distance from a particular instance.
+ Like this, Bagging creates multiple subset datasets while allowing duplicate extraction from the original dataset, which is called "Bootstrap", and that is why Bagging is also called Bootstrap aggregating.  
 
-#### 2. Reachability distance
-Reachability distance has a larger value between the distance from a particular instance to the distance of another instance and the k-distance value.
+ Bagging is characterized by learning models in parallel using Bootstrap, and with this, Bagging is used to deal with bias-variance trade-offs and reduces the variance of a prediction model.
 
-The formula for calculating the LOF score using k-distance and reachability distance is as follows. The outlier is judged based on the score.
-<p align="center"><img src="https://user-images.githubusercontent.com/115224653/201903345-a26f7109-b90b-4915-afc6-a488d8ce1304.png" width="750" height="300"></p> 
+### Bagging is effective when using base learners with high model complexity.   
 
-#### Python Code
+Bagging avoids overfitting of data and is used for both regression and classification models, specifically for decision tree algorithms.   
+
+This tutorial covers the case of using Decision Tree and Random Forest as base learners by applying Bagging.   
+
+In the analysis part, an ablation study is conducted on the performance difference between when bagging is applied and when not applied.
+___
+   
+## 1. Decision Tree (DT)
+
+<p align="center"><img src="https://regenerativetoday.com/wp-content/uploads/2022/04/dt.png" width="650" height="400"></p> 
+
+Decision tree analyzes the data and represents a pattern that exists between them as a combination of predictable rules and is called a decision tree because it looks like a 'tree'.
+
+The above example is a binary classification problem that determines yes=1 if the working conditions for the new job are satisfied and no=0 if not satisfied.
+
+As shown in the picture above, the initial point is called the root node and the corresponding number of data decreases as the branch continues.
+
+Decision trees are known for their high predictive performance compared to computational complexity.
+
+In addition, it has the strength of explanatory power in units of variables, but decision trees are likely to work well only on specific data because the decision boundary is perpendicular to the data axis.
+
+The model that emerged to overcome this problem is Random Forest, a technique that improves predictive performance by combining the results by creating multiple decision trees for the same data.
+___
+## Python Code
 ``` py
 import numpy as np
 import pandas as pd
 import random
 import matplotlib.pyplot as plt
 
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import BaggingClassifier
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 
-def LocalOutlierFactorAD(args):
-    data = pd.read_csv(args.data_path + args.data_type)
-    data = data.sort_values(by=['y'])
-    data.reset_index(inplace=True)
-    data.drop(['index'], axis=1, inplace=True)
+def Decision_Tree(args):
 
-    for i in range(len(data)):
-        if data.iloc[:, -1][i] == 1:
-            data.iloc[:, -1][i] = -1
+    result_df = pd.DataFrame(columns = ['Bagging', 'Seed', 'Depth', 'Accuracy', 'F1-Score'])
 
-    for i in range(len(data)):
-        if data.iloc[:, -1][i] == 0:
-            data.iloc[:, -1][i] = 1
-```
-In all four data sets used, normal label is set to 0 and abnormal label is set to 1. Subsequently, for compatibility with the package used as an evaluation index, it went through the process of changing the normal to label '1' and the abnormal to label '-1'.
+    for bagging in args.bagging:
+        for depth in args.max_depth_list:
+            for seed in args.seed_list:
 
-```py
-    n_outliers = len(data[data.iloc[:, -1]==-1])
-    ground_truth = np.ones(len(X_data), dtype=int)
-    ground_truth[-n_outliers:] = -1
+                data = pd.read_csv(args.data_path + args.data_type)
 
-    scaler = MinMaxScaler()
-    X_scaled = scaler.fit_transform(X_data)
+                X_data = data.iloc[:, :-1]
+                y_data = data.iloc[:, -1]
 
-    lof = LocalOutlierFactor(n_neighbors = args.neighbors, contamination=.03)
-    y_pred = lof.fit_predict(X_scaled)
-    n_errors = (y_pred != ground_truth).sum()
-    accuracy = accuracy_score(y_pred, y_data)
-    precision = precision_score(y_pred, y_data)
-    recall = recall_score(y_pred, y_data)
-    f1score = f1_score(y_pred, y_data)
+                scaler = MinMaxScaler()
+                X_scaled = scaler.fit_transform(X_data)
+
+                X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_data, test_size = 0.2, shuffle = True, random_state = seed)
+
+                if bagging == True:
+                    model = BaggingClassifier(base_estimator = DecisionTreeClassifier(max_depth = depth),
+                                                                n_estimators=args.n_estimators,
+                                                                random_state = seed)
+                else:
+                    model = DecisionTreeClassifier(max_depth=depth)
+
+                model.fit(X_train, y_train)
+
+                y_pred = model.predict(X_test)
+
+                accuracy = accuracy_score(y_pred, y_test)
+                f1score = f1_score(y_pred, y_test, average='weighted')
+                
+                print('Decision Tree max_depth =', depth)
+                print('Accuracy :', accuracy, 'F1-Score :', f1score)
+
+                result = {'Bagging' : bagging,
+                            'Seed' : seed,
+                            'Depth' : depth,
+                            'Accuracy' : accuracy,
+                            'F1-Score' : f1score}
+                
+                result = pd.DataFrame([result])
+
+                result_df = pd.concat([result_df, result], ignore_index = True)
     
-    print('LOF neighbors =', args.neighbors)
-    print('Accuracy :', accuracy, " Precision :", precision)
-    print('Recall :', recall, 'F1-Score :', f1score)
+    return result_df
 ```
-In Local Outlier Factor algorithm, there's one hyperparameter, 'n_neighbors'. This represents the value of k for obtaining k-distance in the above description. The experimental results according to the change in the neighbors value will be examined in the analysis chapter later.
+Unlike the previous tutorials, this tutorial conducted repeated experiments. 
+
+A total of five random seed values were allocated and repeated. 
+
+In the middle, the args.bagging part is for comparing the performance when bagging is applied and when not applied. 
+
+In the Decision Tree part, the experimental construction is how much performance has improved when bagging is applied. 
+
+This part will be examined in the analysis part later.
+
 ___
-## Density-based Anomaly Detection
 
-### 2. K-Neareast Neighbor Anomaly Detection
-<p align="center"><img src="https://user-images.githubusercontent.com/115224653/202087248-f83e7dd4-0b81-4060-9df2-015a9eb24696.png" width="400" height="300"></p>
-The k-nearest neighbor-based anomaly detection problem is a problem of determining whether or not this is an outlier by calculating the distance between k neighbors arbitrarily determined from a single instance. Therefore, setting the number of neighbors k, which is a hyperparameter, is directly related to performance. In the case of outlier data, it is determined that it is an outlier because the distance value from k-neighbors is large.
+## 2. Random Forest
+<p align="center"><img src="https://i0.wp.com/thaddeus-segura.com/wp-content/uploads/2020/09/rfvsdt.png?fit=933%2C278&ssl=1" width="900" height="300"></p>
 
+Random Forest is an enamble model that improves predictive power by reducing the correlation of individual trees by taking advantage of existing bagging and adding a process of randomly selecting variables.   
+
+Let's take a closer look at the above definition below.
+
+### 1. Random Forest is an ensemble model using Bagging.
+Random forest basically uses Bagging. Therefore, Random Forest will also take over the effect of lowering dispersion while maintaining the bias, which is the advantage of Bagging.
+
+### 2. Random Forest improves prediction by reducing the correlation of individual trees through the process of randomly selecting variables.
+Random Forest uses the Bootstrap sample dataset to create several individual trees. In Breiman et al.'s 'Random Forest' paper, it is proved that a smaller correlation between individual trees results in a smaller generalization error of the random forest. In other words, reducing the correlation of individual trees means that the predictive power of the random forest is improved.
+
+### It is important to randomly select candidates for variables to separate individual trees!
+___
+
+#### Python Code
+``` py
+def Random_Forest(args):
+
+    result_df = pd.DataFrame(columns = ['Seed', 'Depth', 'Accuracy', 'F1-Score'])
+
+    for depth in args.max_depth_list:
+        for seed in args.seed_list:
+
+            data = pd.read_csv(args.data_path + args.data_type)
+
+            X_data = data.iloc[:, :-1]
+            y_data = data.iloc[:, -1]
+
+            scaler = MinMaxScaler()
+            X_scaled = scaler.fit_transform(X_data)
+
+            X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_data, test_size = 0.2, shuffle = True, random_state = seed)
+
+            model = RandomForestClassifier(max_depth = depth,
+                                            n_estimators=args.n_estimators,
+                                            random_state = seed)
+                                            
+            model.fit(X_train, y_train)
+
+            y_pred = model.predict(X_test)
+
+            accuracy = accuracy_score(y_pred, y_test)
+            f1score = f1_score(y_pred, y_test, average='weighted')
+            
+            print('Decision Tree max_depth =', depth)
+            print('Accuracy :', accuracy, 'F1-Score :', f1score)
+
+            result = {
+                        'Seed' : seed,
+                        'Depth' : depth,
+                        'Accuracy' : accuracy,
+                        'F1-Score' : f1score}
+            
+            result = pd.DataFrame([result])
+
+            result_df = pd.concat([result_df, result], ignore_index = True)
+    
+    return result_df
+```
+Random Forest part will cover the comparison of performance with the case of Decision Tree without Bagging and Decision Tree with Bagging, not the experiment of tuning the hyperparameter.
+___
+# Boosting
+
+## What is "Boosting"?   
+   
+
+![Boosting](https://velog.velcdn.com/images/iguv/post/3bc28cf5-23f8-4c8b-b509-52c25382f564/image.png)
+
+Boosting is an ensemble method that combines weak learners with poor performance to build a good performance model, and the sequentially generated weak learners compensate for the shortcomings of the previous step in each step.
+
+The training method depends on the type of boosting process called the boosting algorithm. 
+
+However, the algorithm trains the boosting model by following the following general steps:
+
+1. The boosting algorithm assigns the same weight to each data sample. It supplies data to the first machine model, called the basic algorithm. The basic algorithm allows you to make predictions for each data sample.
+
+2. The boosting algorithm evaluates model predictions and increases the weight of samples with more serious errors. It also assigns weights based on model performance. Models that produce excellent predictions have a significant impact on the final decision.
+
+3. The algorithm moves the weighted data to the next decision tree.
+
+4. The algorithm repeats steps 2 and 3 until the training error instance falls below a certain threshold.
+
+### Boosting is effective when using base learners with low model complexity!   
+___
+## 3. Adaptive Boosting (AdaBoost)
+
+<p align="center"><img src="https://cdn-images-1.medium.com/max/800/1*7TF0GggFTqetjxqU5cnuqA.jpeg" width="750" height="300"></p> 
+
+The Adaboost algorithm is a classification-based machine learning model, a method of synthesizing one strong classifier that performs better by weight modification by building and combining a large number of weak classifiers with slightly lower predictive performance. 
+
+The Adaboost model has the advantage of repeatedly modifying and combining weights through mistakes in weak classifiers, and not compromising predictive performance due to less overfitting of the learning data.
+
+In other words, it is the principle of generating a final strong classifier by adding the product of the weight of the weak classifier and the value of the weak classifier.
+___
+#### Python Code
+``` py
+import numpy as np
+import pandas as pd
+import random
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler, Normalizer
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import f1_score, accuracy_score
+
+def AdaptiveBoosting(args):
+
+    result_df = pd.DataFrame(columns = ['Boosting', 'Seed', 'Depth', 'Accuracy', 'F1-Score'])
+
+    for boosting in args.boosting:
+        for depth in args.max_depth_list:
+            for seed in args.seed_list:
+
+                data = pd.read_csv(args.data_path + args.data_type)
+
+                X_data = data.iloc[:, :-1]
+                y_data = data.iloc[:, -1]
+
+                scaler = MinMaxScaler()
+                X_scaled = scaler.fit_transform(X_data)
+
+                X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_data, test_size = 0.2, shuffle = True, random_state = seed)
+
+                if boosting == True:
+                    model = AdaBoostClassifier(base_estimator = DecisionTreeClassifier(max_depth = depth),
+                                                                n_estimators=args.n_estimators,
+                                                                random_state = seed)
+                else:
+                    model = DecisionTreeClassifier(max_depth=depth)
+
+                model.fit(X_train, y_train)
+
+                y_pred = model.predict(X_test)
+
+                accuracy = accuracy_score(y_pred, y_test)
+                f1score = f1_score(y_pred, y_test, average='weighted')
+                
+                print('Decision Tree max_depth =', depth)
+                print('Accuracy :', accuracy, 'F1-Score :', f1score)
+
+                result = {'Boosting' : boosting,
+                            'Seed' : seed,
+                            'Depth' : depth,
+                            'Accuracy' : accuracy,
+                            'F1-Score' : f1score}
+                
+                result = pd.DataFrame([result])
+
+                result_df = pd.concat([result_df, result], ignore_index = True)
+    
+    return result_df
+```
+In the middle, the args.boosting part is for comparing the performance when boosting is applied and when not applied. Like the Decision Tree part, the results of the Decision Tree with Adaptive Boosting and the results of the Decision Tree without Adaptive Boosting will be compared in the analysis part.
+___
+## 4. Gradient Boosting Machine (GBM)
+
+<p align="center"><img src="https://www.akira.ai/hubfs/Imported_Blog_Media/akira-ai-gradient-boosting-ml-technique.png" width="750" height="300"></p> 
+
+Gradient Boosting Machines (GBM) is a way to understand the concept of Boosting as an optimization method called Gradient Descent.
+
+As I explained before, boosting is a method of adding and sequential learning multiple trees and synthesizing the results.
+
+GBM, like AdaBoost, is an algorithm of the Boosting family, so it complements the residual of the previous learner by creating a weak learner sequentially, but the two have different methods of complementing the residual.
+
+AdaBoost addresses previously misclassified data by giving more weight to well-classified learners.
+
+By comparison, GBM is a method of updating predictions by fitting weak learners to the residuals themselves and adding the predicted residuals to the previous predictions.
+___
 #### Python Code
 ``` py
 import random
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import random
 
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.neighbors import NearestNeighbors
-from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.metrics import f1_score, accuracy_score
 
-def KNearestNeighborAD(args):
+def GradientBoosting(args):
+
+    result_df = pd.DataFrame(columns = ['Seed', 'n_estimators', 'Accuracy', 'F1-Score'])
+
+
+    for n_estimators in args.gbm_estimators:
+        for seed in args.seed_list:
+
+            data = pd.read_csv(args.data_path + args.data_type)
+
+            X_data = data.iloc[:, :-1]
+            y_data = data.iloc[:, -1]
+
+            scaler = MinMaxScaler()
+            X_scaled = scaler.fit_transform(X_data)
+
+            X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_data, test_size = 0.2, shuffle = True, random_state = seed)
+
+            model = GradientBoostingClassifier(n_estimators=n_estimators,
+                                                    random_state = seed)
+
+            model.fit(X_train, y_train)
+
+            y_pred = model.predict(X_test)
+
+            accuracy = accuracy_score(y_pred, y_test)
+            f1score = f1_score(y_pred, y_test, average='weighted')
+            
+            print('Decision Tree n_estimators =', n_estimators)
+            print('Accuracy :', accuracy, 'F1-Score :', f1score)
+
+            result = {
+                        'Seed' : seed,
+                        'n_estimators' : n_estimators,
+                        'Accuracy' : accuracy,
+                        'F1-Score' : f1score}
+            
+            result = pd.DataFrame([result])
+
+            result_df = pd.concat([result_df, result], ignore_index = True)
+
+    return result_df
+```
+In the experimental part of Gradient Boosting Machines, we adjust the n_estimators hyperparameter and compare the resulting performance changes while adjusting the model complexity. 
+
+This part will be examined in the analysis part.
+___
+## 5. eXtra Gradient Boost (XGBoost)
+![xgboost](https://www.researchgate.net/publication/345327934/figure/fig3/AS:1022810793209856@1620868504478/Flow-chart-of-XGBoost.png)
+
+Gradient Boost is a representative algorithm implemented using the Boosting technique.
+
+The library that implements this algorithm to support parallel learning is eXtra Gradient Boost (XGBost).
+
+It supports both Regression and Classification problems, and is a popular algorithm with good performance and resource efficiency.
+
+Because it learns through parallel processing, the classification speed is faster than that of general GBM.
+
+In addition, in the case of standard GBM, there is no overfitting regulation function, but XGBoost itself has strong durability as an overfitting regulation function.
+
+It has an Early Stopping function, offers a variety of options, and is easy to customize.
+
+___
+
+
+### Python Code
+``` py
+import random
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import random
+
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.preprocessing import MinMaxScaler
+from xgboost import XGBClassifier
+from sklearn.metrics import f1_score, accuracy_score
+
+def ExtremeGradientBoosting(args):
+
+    result_df = pd.DataFrame(columns = ['Seed', 'n_estimators', 'Accuracy', 'F1-Score'])
+
     data = pd.read_csv(args.data_path + args.data_type)
-    data = data.sort_values(by=['y'])
-    data.reset_index(inplace=True)
-    data.drop(['index'], axis=1, inplace=True)
-
-    for i in range(len(data)):
-        if data.iloc[:, -1][i] == 1:
-            data.iloc[:, -1][i] = -1
-
-    for i in range(len(data)):
-        if data.iloc[:, -1][i] == 0:
-            data.iloc[:, -1][i] = 1
 
     X_data = data.iloc[:, :-1]
     y_data = data.iloc[:, -1]
-```
-In all four data sets used, normal label is set to 0 and abnormal label is set to 1. Subsequently, for compatibility with the package used as an evaluation index, it went through the process of changing the normal to label '1' and the abnormal to label '-1'.
 
-```py
+    if args.data_type == 'WineQuality.csv':
+        y_data -= 3
+
+    elif args.data_type == 'Glass.csv':
+        y_data -= 1
+        
     scaler = MinMaxScaler()
     X_scaled = scaler.fit_transform(X_data)
 
-    knnbrs = NearestNeighbors(n_neighbors = args.neighbors)
-    knnbrs.fit(X_scaled)
-    distances, _ = knnbrs.kneighbors(X_scaled)
+    X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_data, test_size = 0.2, shuffle = True, random_state = args.seed)
 
-    outlier_idx = np.where(distances.mean(axis=1) > args.threshold)
-    normal_idx = list(set(range(len(X_data))) - set(outlier_idx[0]))
-    y_pred = np.ones(len(X_data), dtype=int)
-    y_pred[outlier_idx] = -1
+    model = XGBClassifier()
 
-    accuracy = accuracy_score(y_pred, y_data)
-    precision = precision_score(y_pred, y_data)
-    recall = recall_score(y_pred, y_data)
-    f1score = f1_score(y_pred, y_data)
-    
+    xgb_param_grid = {
+        'n_estimators' : args.gbm_estimators,
+        'learning_rate' : args.xgb_lr,
+        'max_depth' : args.xgb_depth
+    }
 
-    print('K-NN Anomaly Detection') 
-    print('neighbors :', args.neighbors, ', threshold :', args.threshold)
-    print('Accuracy :', accuracy, " Precision :", precision)
-    print('Recall :', recall, 'F1-Score :', f1score)
+    xgb_grid = GridSearchCV(model, param_grid = xgb_param_grid, scoring='accuracy', n_jobs = -1, verbose = 1)
+    xgb_grid.fit(X_train, y_train)
+
+    print('Best Accuracy : {0:.4f}'.format(xgb_grid.best_score_))
+    print('Best Parameters :', xgb_grid.best_params_)
+
+    result_df = pd.DataFrame(xgb_grid.cv_results_)
+    result_df.sort_values(by=['rank_test_score'], inplace=True)
+
+    result_df[['params', 'mean_test_score', 'rank_test_score']].head(5)
+
+    return result_df        
 ```
-'knnbrs' refers to the Nearest neighbor model according to the number of neighbors, which is a hyperparameter. Then, the distance from k neighbors is calculated, and the average of the corresponding distance values is calculated. args.threshold represents a threshold to be determined as an outlier, which is also set as a hyperparameter. As will be seen in the experiment, the setting of threshold is directly related to performance.
-___
-## Model-based Anomaly Detection
+In the experimental part of XGBoost, grid search for hyperparameters n_estimators, learning_rate, and max_depth was conducted.
 
-### 3. Auto-encoder
-<p align="center"><img src="https://user-images.githubusercontent.com/115224653/202088547-79e0ba8f-9cc7-41ca-b632-0eeeb106fc1e.png" width="600" height="300"></p>
-Auto-encoder refers to a model that compresses input data into a late vector through an encoder and then restores it to the same shape as input data through a decoder. One might wonder how this model, which simply compresses and reconstructs input data, can be used for the anomaly detection problem. The important part is the second content mentioned earlier that anomaly detection is different from the classification problem. Since the model is trained to reconstruct input data using only normal data in the train phase, it is impossible to properly reconstruct outlier data when it enters input data in test phase, and the data is judged as outlier data. 
-
-#### Python Code
-``` py
-import random
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import tensorflow as tf
-import random
-
-from sklearn.pipeline import Pipeline
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler, Normalizer
-from sklearn.neighbors import NearestNeighbors
-from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+Let's compare the best performance when each dataset has a hyperparameter.
 
 
-def mad_score(points):
-    m = np.median(points)
-    ad = np.abs(points - m)
-    mad = np.median(ad)
-
-    return 0.6745 * ad / mad
-```
-'mad score' is used as a threshold for the anonymous detection problem using Auto-encoder. The reason why I use mad score is because the mean and standard deviation are themselves susceptible to the presence of anomalies. As a criterion for determining an outlier, MSE value between the reconstructed data and the existing data is obtained and converted into MAD_Score, and if it is higher than the threshold value, it is determined as an outlier. A brief formula for mad score is as follows.
-<p align="center"><img src="https://user-images.githubusercontent.com/115224653/202091036-5a3155bc-8c45-4ab5-976c-6f56703983ab.png" width="600" height="150"></p>
-
-``` py
-def AutoencoderAD(args):
-    data = pd.read_csv(args.data_path + args.data_type)
-    data = data.sort_values(by=['y'])
-    data.reset_index(inplace=True)
-    data.drop(['index'], axis=1, inplace=True)
-
-    scaler = MinMaxScaler()
-    data.iloc[:, :-1] = scaler.fit_transform(data.iloc[:, :-1])
-
-    for i in range(len(data)):
-        if data.iloc[:, -1][i] == 1:
-            data.iloc[:, -1][i] = -1
-
-    for i in range(len(data)):
-        if data.iloc[:, -1][i] == 0:
-            data.iloc[:, -1][i] = 1
-
-    outlier = data[data.iloc[:, -1] == -1]
-    normal = data[data.iloc[:, -1] == 1]
-
-    X_train = normal.iloc[:int(len(normal) * (1 - args.split))]
-    X_test = normal.iloc[int(len(normal) * (1 - args.split)):].append(outlier)
-    
-    X_train, X_valid = train_test_split(X_train.iloc[:, :-1],
-                                        test_size = args.split,
-                                        random_state = args.seed)
-```
-``` py
-if args.masking:
-        sample_idx_list = list(range(X_train.shape[0]))
-        for i in range(len(X_train.iloc[:, :-1].columns)):
-            random_idx = random.sample(sample_idx_list, int(args.masking_ratio * len(X_train)))
-            for idx in random_idx:
-                X_train.iloc[:, i][idx] = 0
-
-    X_test, y_test = X_test.iloc[:, :-1], X_test.iloc[:, -1]
-
-
-    model = tf.keras.models.Sequential([
-        tf.keras.layers.Dense(16, activation='relu'),
-        tf.keras.layers.Dense(8, activation='relu'),
-        tf.keras.layers.Dense(4, activation='relu'),
-        tf.keras.layers.Dense(2, activation='relu'),
-        tf.keras.layers.Dense(4, activation='relu'),
-        tf.keras.layers.Dense(8, activation='relu'),
-        tf.keras.layers.Dense(16, activation='relu'),
-        tf.keras.layers.Dense(X_test.shape[-1], activation='relu'),
-        ])
-
-    model.compile(optimizer="adam", 
-                    loss="mse",
-                    metrics=["mse"])
-    # model.build(X_train.shape)
-    # model.summary()
-    
-    save_model = tf.keras.callbacks.ModelCheckpoint(
-    filepath='autoencoder_best_weights.hdf5',
-    save_best_only=True,
-    monitor='val_loss',
-    verbose=0,
-    mode='min'
-)
-    cb = [save_model]
-
-    history = model.fit(
-    X_train, X_train,
-    shuffle=True,
-    epochs=args.epoch,
-    batch_size=args.batch_size,
-    callbacks=cb,
-    validation_data = (X_valid, X_valid)
-    )
-
-    reconstructions = model.predict(X_test)
-
-    mse = np.mean(np.power(X_test - reconstructions, 2), axis=1)
-    z_scores = mad_score(mse)
-    outliers = z_scores > args.threshold     
-    outliers = outliers * 1
-    outliers[outliers == 1] = -1
-    outliers[outliers == 0] = 1
-
-    real_outliers_idx = y_test[y_test == -1].index
-    real_normal_idx = y_test[y_test == 1].index
-    pred_outlier_idx = outliers[outliers == -1].index
-    pred_normal_idx = outliers[outliers == 1].index
-
-    accuracy = accuracy_score(outliers.to_numpy(), y_test.to_numpy())
-    precision = precision_score(outliers.to_numpy(), y_test.to_numpy())
-    recall = recall_score(outliers.to_numpy(), y_test.to_numpy())
-    f1score = f1_score(outliers.to_numpy(), y_test.to_numpy())
-
-    print(f"Detected {np.sum(outliers==-1):,} outliers in a total of {np.size(z_scores):,} transactions [{np.sum(outliers==-1)/np.size(z_scores):.2%}].")
-    print('Accuracy :', accuracy, " Precision :", precision)
-    print('Recall :', recall, 'F1-Score :', f1score)
-```
-We used tensorflow to build a deep learning model. The model structure is very simple. The existing feature is compressed into 16-dim -> 8-dim -> 4dim -> 2dim and reconstructed with the existing shape. We conducted an additional experiment applying masking, which replaces random information among input data with a value of 0. The following is a architecture of the model structure, and a comparative experiment according to masking will be confirmed later in analysis. 
-
-### Masking
-
-<p align="center"><img src="https://user-images.githubusercontent.com/115224653/202111809-441be92d-89b2-491c-b744-29887a9758c0.png" width="600" height="300"></p>
-
-Masking is one of the data augmentation techniques and it is usually used a lot when dealing with image data.. It can be thought that distorting the data value can rather interfere with training. However, it has been experimentally demonstrated that by omitting some values, the encoder that compresses the data and the decoder that reconstruct it can better understand the features of the data. In the experiment, how much of the data to mask will be set as a hyperparameter and the experimental performance will be compared. 
-
-![image](https://user-images.githubusercontent.com/115224653/202095568-700242b1-22da-4f5b-bfd0-6dab955953f1.png)
-
-___
-### 4. Isolation Forest
-![image](https://user-images.githubusercontent.com/115224653/202096384-0b20d985-336b-4b3a-8da9-59eda25b3f41.png)
-Isolation Forest is a model that literally uses straight lines to separate data, determining whether it is outlier data based on the number of straight lines required to isolate. The picture above shows that the anomaly data needs a small number of straight lines to isolate, and the normal data needs a large number of straight lines to isolate. It is a model that determines whether the data is abnormal based on the number of straight lines required to isolate the data.
-
-#### Python Code
-``` py
-import random
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import random
-
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.ensemble import IsolationForest
-from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
-
-def IsolationForestAD(args):
-    data = pd.read_csv(args.data_path + args.data_type)
-    data = data.sort_values(by=['y'])
-    data.reset_index(inplace=True)
-    data.drop(['index'], axis=1, inplace=True)
-
-    scaler = MinMaxScaler()
-    data.iloc[:, :-1] = scaler.fit_transform(data.iloc[:, :-1])
-
-    for i in range(len(data)):
-        if data.iloc[:, -1][i] == 1:
-            data.iloc[:, -1][i] = -1
-
-    for i in range(len(data)):
-        if data.iloc[:, -1][i] == 0:
-            data.iloc[:, -1][i] = 1
-
-    X = data.iloc[:, :-1]
-    y = data.iloc[:, -1]
-```
-``` py
-    if_model = IsolationForest(n_estimators = args.n_estimators,
-                                max_samples = args.max_samples,
-                                contamination = args.anomaly_ratio,
-                                random_state = args.seed)
-
-    if_model.fit(X)
-    y_pred = if_model.predict(X)
-
-    accuracy = accuracy_score(y_pred, y)
-    precision = precision_score(y_pred, y)
-    recall = recall_score(y_pred, y)
-    f1score = f1_score(y_pred, y)
-    
-    print('Isolation Forest Performance')
-    print('Accuracy :', accuracy, " Precision :", precision)
-    print('Recall :', recall, 'F1-Score :', f1score)
-```
-In 'IsolationForest' model, we used four arguments, 'n_estimators', 'max_samples', 'contamination', 'random_state'. 'n_estimators' represent the number of trees and the default value is 100. 'max_samples' represents the number of data sampled for each tree by the specified number of integers. If it is a real number between 0 and 1, the total number of data is multiplied by the real number, and if not specified, the total number of data is used, and the smaller number of 256 is used. "contamination" represents the ratio of outliers in all data, and according to this ratio, the threshold of the score to be determined as outliers is defined. 'random_state' represents the seed value, as you know.
 ___
 
 ## Analysis
-Since the outlier threshold determined according to the methodology to be tested is different, the experiment was first conducted by methodology. The threshold is a point value corresponding to 95% of the outer score's max value, and has a different value for each dataset. Therefore, since the outer score calculated by the model is different, the comparison by model is meaningless. Therefore, the main content is not comparison by model, but performance comparison through hyperparameter tuning for one model.
 
-### [Experiment 1.] Comparison of Local Outlier Factor performance by neighbors hyperparameter changes
 
-In the Local Outlier Factor methodology, 'k' as defined by the hyperparameter is very important because it directly affects the calculation of k-distance and reachability, which are important elements of the methodology. In the existing code, the default value of k is 20. We compared the performance for a total of six cases: 5, 10, 15, 20, 30, 50. The evaluation metrics were set to accuracy and F1 score.
+## [Experiment 1.] Decision Tree - DT Performance Comparison by Bagging Application
 
-|  Accuracy  | Dataset              |  K = 5 |   K = 10 |   K = 15 |   K = 20 |   K = 30 |   K = 50 |
-|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|:--------:|
-|          1 | Cardiotocogrpahy            |    0.9001 |        **0.9022** |         0.8990|        0.8990 |        0.9000|        0.9001|
-|          2 | Glass                 |    0.9439 |        0.9439|        **0.9533** |        0.9439 |        0.9420|        0.9439 |
-|          3 | Lympho                 |    0.9595 |        0.9595 |        **0.9730** |        0.9730 |        0.9730 |        0.9730 |
-|          4 | Seismic                 |    0.9249 |        0.9249 |        0.9249 |        0.9249 |        0.9249 |        0.9241 |
-|          5 | Shuttle                 |    0.9220 |        0.9226 |        **0.9233** |        0.9231 |        0.9230 |        0.9221 |
-|          6 | Annthyroid                 |    0.9167 |        0.9214 |        0.9202 |        0.9208 |        0.9219 |        **0.9228** |
-|          7 | Mammography                 |    0.9700 |        0.9691 |        0.9701 |        0.9705 |        0.9708 |        **0.9717** |
+In the Python code section of the decision tree, it was possible to set whether to apply bagging through the arg.bagging argument.
 
-|  F1-Score  | Dataset              |  K = 5 |   K = 10 |   K = 15 |   K = 20 |   K = 30 |   K = 50 |
-|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|:--------:|
-|          1 | Cardiotocogrpahy            |    0.9484 |        **0.9484** |         0.9466|        0.9466 |        0.9472|        0.9472|
-|          2 | Glass                 |    0.9712 |        0.9712|        **0.9760** |        0.9712 |        0.9712|        0.9712 |
-|          3 | Lympho                 |    0.9792 |        0.9792 |        **0.9861** |        0.9861 |        0.9861 |        0.9861 |
-|          4 | Seismic                 |    0.9610 |        0.9610 |        0.9610 |        0.9610 |        0.9610 |        0.9606 |
-|          5 | Shuttle                 |    0.9593 |        0.9597 |        **0.9600** |        0.9599 |        0.9599 |        0.9594 |
-|          6 | Annthyroid                 |    0.9565 |        0.9590 |        0.9584 |        0.9587 |        0.9593 |        **0.9597** |
-|          7 | Mammography                 |    0.9847 |        0.9843 |        0.9848 |        0.9850 |        0.9852 |       **0.9856** |
+It is intended to understand the effect of model complexity and bagging on performance by comparing the performance according to the pre-set max_depth value with the application of bagging.
+
+As for the performance evaluation metric, accuracy and F1 score were used as in the previous tutorial.
+
+First of all, the table below is a performance table of the decision tree without bagging. 
+
+### All experiments are the results of five repeated experiments by changing the seed value.
+
+|  Accuracy  | Dataset              |  Depth = 10 |   Depth = 20 |   Depth = 30 |  Depth = 40 |   Depth = 50 |
+|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
+|          1 | Banking            |    **0.8345 (±0.008)** |        0.7881 (±0.005)|         0.7820 (±0.003)|        0.7824 (±0.004) |        0.7830 (±0.008)|
+|          2 | Breast                 |    0.9368 (±0.022) |        0.9404 (±0.010)|         **0.9456 (±0.012)**|        0.9404 (±0.019) |        0.9404 (±0.030)|
+|          3 | Diabetes                 |    **0.7013 (±0.025)**|        0.6857 (±0.040) |        0.6922 (±0.044) |        0.6896 (±0.036) |        0.6935 (±0.037) |
+|          4 | Glass                 |   **0.6837 (±0.066)** |        0.6698 (±0.045) |        0.6744 (±0.033) |        0.6514 (±0.057) |        0.6514 (±0.004) |
+|          5 | PersonalLoan                 |    0.9822 (±0.002)|        0.9814 (±0.001) |        0.9820 (±0.002) |        **0.9824 (±0.003)** |        0.9814 (±0.002) | 
+|          6 | Stellar                 |    **0.9676 (±0.002)** |        0.9614 (±0.002) |        0.9599 (±0.002) |        0.9609 (±0.002) |        0.9608 (±0.002) | 
+|          7 | WineQuality                 |    0.6069 (±0.027) |        0.6150 (±0.032) |        **0.6175 (±0.026)** |        0.6138 (±0.026) |        0.6125 (±0.025)  |
+
+|  F1-Score  | Dataset              |  Depth = 10 |   Depth = 20 |   Depth = 30 |  Depth = 40 |   Depth = 50 |
+|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|
+|          1 | Banking            |    **0.8607 (±0.003)** |        0.8494 (±0.003)|         0.8476 (±0.003)|        0.8475 (±0.003) |        0.8475 (±0.003)|
+|          2 | Breast                 |    **0.9647 (±0.007)** |        0.9631 (±0.065)|         0.9632 (±0.065)|        0.9632 (±0.065) |        0.9632 (±0.065)|
+|          3 | Diabetes                 |    **0.7688 (±0.017)**|        0.7649 (±0.020) |        0.7649 (±0.020) |        0.7649 (±0.020) |        0.7649 (±0.020) |
+|          4 | Glass                 |   **0.7395 (±0.037)** |        0.7256 (±0.027) |        0.7256 (±0.027) |        0.7256 (±0.027) |        0.7256 (±0.027) |
+|          5 | PersonalLoan                 |    **0.9884 (±0.003)**|        0.9880 (±0.003) |        0.9880 (±0.003) |        0.9880 (±0.003) |        0.9880 (±0.003) | 
+|          6 | Stellar                 |    0.9761 (±0.002) |        **0.9767 (±0.002)** |        0.9766 (±0.002) |        0.9766 (±0.002) |        0.9766 (±0.002) | 
+|          7 | WineQuality                 |    0.6725 (±0.021) |        0.6763 (±0.022) |        **0.6788 (±0.025)** |        0.6787 (±0.025) |        0.6787 (±0.025)  |
 
 Analyzing the experimental results can be summarized as follows.
 
-#### 1. Datasets (Lympho, Seismic) with a small number of samples are insensitive to performance changes despite changes in K values.
-#### 2. As the K value increases, the performance of datasets with a large number of samples (Anthyroid, Mammography) increases slightly.
-#### 3. The high value of K did not necessarily mean that the performance was good.
-#### 4. It did not seem to be significantly affected by the change in the K value.
+#### 1. Compared to when bagging was not applied, performance was improved on all datasets when applied.
+#### 2. When the model complexity is high, the performance of bagging is generally good. However, the performance was rather good when the max_depth value related to the model complexity was lower than when it was high.
+#### 3. Setting the max_depth hyperparameter value seems to have an important effect on performance.
+#### 4. The deviation between repeated experiments was low.
 ___
 
 ### [Experiment 2.] Comparison of k-NN anomaly detection performance by neighbors hyperparameter changes
@@ -540,11 +652,22 @@ ___
 
 ### Reference
 
-- Business Analytics, Korea university (IME-654) https://www.youtube.com/watch?v=ODNAyt1h6Eg
-- https://towardsdatascience.com/anomaly-detection-in-time-series-sensor-data-86fd52e62538
-- https://www.researchgate.net/figure/The-anomaly-detection-and-the-classification-learning-schemas_fig1_282309055
-- https://yjjo.tistory.com/45
-- https://medium.com/dataman-in-ai/anomaly-detection-with-pyod-b523fc47db9
-- https://www.assemblyai.com/blog/introduction-to-variational-autoencoders-using-keras/
-- https://sh-tsang.medium.com/review-context-encoders-feature-learning-by-inpainting-bd181e48997
-- https://towardsdatascience.com/how-to-perform-anomaly-detection-with-the-isolation-forest-algorithm-e8c8372520bc
+- Business Analytics, Korea university (IME-654) https://www.youtube.com/watch?v=vlkbVgdPXc4&t=1588s
+- https://www.simplilearn.com/tutorials/machine-learning-tutorial/bagging-in-machine-learning
+- https://regenerativetoday.com/simple-explanation-on-how-decision-tree-algorithm-makes-decisions/The-anomaly-detection-and-the-classification-learning-schemas_fig1_282309055
+- 
+- 
+- 
+- 
+- 
+
+
+|  Accuracy  | Dataset              |  K = 5 |   K = 10 |   K = 15 |   K = 20 |   K = 30 |   K = 50 |
+|:----------:|:--------------------:|:------:|:--------:|:--------:|:--------:|:--------:|:--------:|
+|          1 | Banking            |    0. |        0. |         0.|        0.8990 |        0.|        0.|
+|          2 | Breast                 |    0. |        0.|        0. |        0. |        0.|        0. |
+|          3 | Diabetes                 |    0. |        0. |        0. |        0. |        0. |        0. |
+|          4 | Glass                 |    0. |        0. |        0. |        0. |        0. |        0. |
+|          5 | PersonalLoan                 |    0. |        0. |        0. |        0. |        0. |        0. |
+|          6 | Stellar                 |    0. |        0. |        0. |        0. |        0. |        0. |
+|          7 | WineQuality                 |    0. |        0. |        0. |        0. |        0. |        0. |
